@@ -1,6 +1,7 @@
 const app = require("express")();
 const server = require("http").Server(app);
-const io = require("socket.io")(server,
+const { instrument } = require("@socket.io/admin-ui");
+const io = new require("socket.io")( server,
     {
         cors:{
             origin:true,
@@ -9,13 +10,19 @@ const io = require("socket.io")(server,
         }
     }
     );
+    instrument(io, {
+        auth: false,
+        mode: "development",
+      });
 const path = require("path");
 const PORT = process.env.PORT || 3000;
 const list_users = {};
 
 app.get('/',(req,res)=>{res.send('<h1>Hola mundo</h1>')});
-/*app.use(express.static(path.join(__dirname, "views")));*/
-
+/*app.use(express.static(path.join(__dirname, "views")));
+app.get("/", (req, res) => {
+    res.sendFile(__dirname + "/views/index.html");
+});*/
 server.listen(PORT, () => {
   console.log(
     "Server Iniciado\n" +
