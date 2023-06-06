@@ -71,13 +71,15 @@ io.on("connection", (socket) =>
         io.emit("activeSessions", list_users);
     });
 
-    socket.on("sendMessage", ({ message, image }) => 
+    socket.on("sendMessage", ({ message, image, user }) => 
     {
+        socket.nickname = user;
         io.emit("sendMessage", { message, user: socket.nickname, image });
     });
 
-    socket.on("sendMessagesPrivate", ({ message, image, selectUser }) => 
+    socket.on("sendMessagesPrivate", ({ message, image, selectUser,user }) => 
     {
+        socket.nickname = user;
         if (list_users[selectUser]) 
         {
             io.to(list_users[selectUser]).emit("sendMessage", 
