@@ -35,22 +35,31 @@ io.on("connection", (socket) =>
 {
     socket.on("register", (nickname) => 
     {
-        if (list_users[nickname]) 
+        console.log(nickname);
+        console.log(list_users);
+        if(nickname!='')
         {
-            console.log(socket.nickname+" existe");
-            socket.emit("userExists", true);
-            return ;
-        } 
-        else 
-        {
-            console.log(socket.nickname+" no existe");
-            list_users[nickname] = socket.id;
-            socket.nickname = nickname;
-            socket.emit("userExists", false);
-          
-            /*socket.emit("login");
-            io.emit("activeSessions", list_users);*/
+            if (list_users[nickname]) 
+            {
+                console.log(nickname+" existe");
+                socket.emit("userExists", true);
+                return ;
+            } 
+            else 
+            {
+                console.log(nickname+" no existe");
+                list_users[nickname] = socket.id;
+                socket.nickname = nickname;
+                socket.emit("userExists", false);
+              
+                /*socket.emit("login");*/
+                io.emit("activeSessions", list_users);
+                 /* let   message="hola";
+                  let image=null;
+                io.emit("sendMessage", { message, user: socket.nickname, image });*/
+            }
         }
+       
     });
 
 
